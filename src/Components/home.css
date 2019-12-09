@@ -7,3 +7,7 @@
 .imgClass{
     width: 200px;
 }
+
+.animated{
+    transform: translate3d(0%)!important;
+}

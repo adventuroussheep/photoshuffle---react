@@ -18,14 +18,11 @@ class Home extends React.Component {
         super(props)
         this.state = {
             imageShuffle: 1,
+            timeoutShuffle: 0,
         }
     }
     
 
-
-    setTimeout = () => 
-        console.log('Alligator!!!!');
-       1000;
 
 
     shuffleImages = () =>  {
@@ -34,15 +31,28 @@ class Home extends React.Component {
         console.log(newIndex);
     }
  
+
+
+    useEffect = () => {
+        const timer = setTimeout(() => {
+            
+            var newRoll = Math.floor(Math.random() * Math.floor(3));
+            this.setState({timeoutShuffle: newRoll});
+
+            
+        }, 4000);
+        return () => clearTimeout(this.useEffect);
+      };
     
     render(){
-        var newIndex = this.state.imageShuffle;
+        // var newIndex = this.state.imageShuffle;
         
+
         
         return(
             <div>
 
-            <Carousel showArrows={false} showIndicators={false} showStatus={false}  showThumbs={false}  stopOnHover={false}  selectedItem={newIndex} infiniteLoop autoPlay>
+            <Carousel showArrows={false} showIndicators={false} showStatus={false}  showThumbs={false}  stopOnHover={false} swipeable={false} selectedItem={this.state.timeoutShuffle}  transitionTime={1000} infiniteLoop>
 
                 <div className="imgDiv">
                     <img className="imgClass" src={image} alt="img"/>
@@ -60,9 +70,8 @@ class Home extends React.Component {
             </Carousel>
 
 
-                 {/* <h1>Helloasdfasdf</h1> */}
-        {/* <h2>{this.state.imageShuffle}</h2> */}
-        <button onClick={this.shuffleImages}>asdf</button>
+
+        <button onClick={this.useEffect()}>Timer?</button>
         </div>
         )
 
