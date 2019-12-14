@@ -23,7 +23,8 @@ class Home extends React.Component {
         this.state = {
             imageShuffle: 1,
             timeoutShuffle: 0,
-            visibility: 'hidden'
+            visibility: 'hidden',
+            volume: 0.1
         }
     }
     
@@ -45,14 +46,28 @@ class Home extends React.Component {
         };
         
     
+        // also sets volume
         rainVisibility = () => {
             if(this.state.visibility == 'hidden'){
                 this.setState({visibility: 'visible'})
+                this.setVolume();
             } if(this.state.visibility == 'visible'){
                 this.setState({visibility: 'hidden'})
+                this.setVolume();
+            }
+
+
+            
+        }
+        
+        setVolume = () =>{
+            if(this.state.volume === 0.1){
+                this.setState({volume: 0.5})
+            } if(this.state.volume === 0.5){
+                this.setState({volume: 0.1})
             }
         }
-
+      
 
 
     //   componentDidMount() {
@@ -62,7 +77,11 @@ class Home extends React.Component {
     //     this.parallax.disable()
     //   }
 
-
+    componentDidUpdate(object){
+        console.log("hello");
+        var object = this.refs.volId;
+        object.volume = this.state.volume;
+    }
 
 
 
@@ -76,13 +95,24 @@ class Home extends React.Component {
           document.body.appendChild(script);
           var scene = document.getElementById('scene');
         //   var parallaxInstance = new Parallax(scene);
-        var getVol = document.getElementById('volId');
+
+        
+
+        // Waits for page to load to change rain volume
+        // window.onload = () =>{
+
+        //         var object = this.refs.volId;
+        //         object.volume = this.state.volume;
+
+        // }
+
+       
         
         return(
             <div>
 
 <div>
- <audio id="volId" ref="asdf" src={rainAudio} volume="0.1" loop controls autoPlay/>
+ <audio id="volId" ref="volId" volume={this.state.volume} src={rainAudio} loop controls autoPlay/>
  </div>
 
                 <button onClick={this.rainVisibility}>Rain</button>
