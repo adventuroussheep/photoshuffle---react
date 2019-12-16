@@ -11,6 +11,49 @@ body{
     width: 200px;
 }
 
+.ligthCheck{
+
+}
+
+.lightBtn{
+  position: absolute;
+  z-index: 22;
+  right: 5px;
+  top: 60px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: blue;
+  border: none;
+  cursor: pointer;
+}
+
+.lightDiv{
+  transition: opacity 0.5s;
+  opacity: 0.5;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  position: absolute;
+  z-index: 20;
+}
+.lightDiv.hide{
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rainBtn{
+  position: absolute;
+  z-index: 22;
+  right: 5px;
+  top: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: blue;
+  border: none;
+  cursor: pointer;
+}
+
+
 .rainWrapper{
     height: 100vh;
     width: 100vw;

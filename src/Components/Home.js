@@ -8,6 +8,10 @@ import Parallax from "parallax-js";
 
 import rainAudio from "../Assests/Audio/rain.mp3";
 
+
+import rainIcon from "../Assests/Icons/rain.png";
+import bulbIcon from "../Assests/Icons/bulb.png";
+
 import image from "../Assests/Images/1.jpg";
 import image2 from "../Assests/Images/2.jpg";
 import image3 from "../Assests/Images/3.jpg";
@@ -24,21 +28,36 @@ class Home extends React.Component {
             imageShuffle: 1,
             timeoutShuffle: 0,
             visibility: 'hidden',
-            volume: 0.1
+            volume: 0.0,
+            open: false,
         }
+
+        this.handleDropDown = this.handleDropDown.bind(this);
+
     }
     
+    handleDropDown = () =>{
+        this.setState({ open: !this.state.open })
+    }
 
 
-
- 
+    // Shuffles images
+    // Fixes: needs to reRoll if state = roll
          useEffect = () => {
             const timer = setTimeout(() => {
                 
                 var newRoll = Math.floor(Math.random() * Math.floor(3));
+                // if(newRoll === this.timeoutShuffle){
+                //     // this.useEffect();
+                //     console.log("Rolled:" + newRoll)
+                //     return () => clearTimeout(this.useEffect);
+                // } if (newRoll !== this.timeoutShuffle){
+                //     this.setState({timeoutShuffle: newRoll});
+                // }
+
                 this.setState({timeoutShuffle: newRoll});
                 
-                console.log("fired");
+                console.log(newRoll);
                 
                 
             }, 8000);
@@ -48,6 +67,7 @@ class Home extends React.Component {
     
         // also sets volume
         rainVisibility = () => {
+            
             if(this.state.visibility == 'hidden'){
                 this.setState({visibility: 'visible'})
                 this.setVolume();
@@ -59,12 +79,14 @@ class Home extends React.Component {
 
             
         }
+       
         
+        // Sets volume switch of rain sounds
         setVolume = () =>{
-            if(this.state.volume === 0.1){
-                this.setState({volume: 0.5})
-            } if(this.state.volume === 0.5){
+            if(this.state.volume === 0.0){
                 this.setState({volume: 0.1})
+            } if(this.state.volume === 0.1){
+                this.setState({volume: 0.0})
             }
         }
       
@@ -77,10 +99,17 @@ class Home extends React.Component {
     //     this.parallax.disable()
     //   }
 
+    // Listens for rainBtn to update and sets rain volume
     componentDidUpdate(object){
         console.log("hello");
         var object = this.refs.volId;
         object.volume = this.state.volume;
+        object.play();
+        // if(object.play() == object.play()){
+        //     object.pause();
+        // } if(!object.play()){
+        //     object.play();
+        // }
     }
 
 
@@ -106,16 +135,35 @@ class Home extends React.Component {
 
         // }
 
+        // Toggle for night/dark mode
+        const classes = this.state.open ? 'lightDiv' : 'lightDiv hide';
+
        
         
         return(
             <div>
 
+{/* Rain Audio Input*/}
 <div>
- <audio id="volId" ref="volId" volume={this.state.volume} src={rainAudio} loop controls autoPlay/>
+ <audio id="volId" ref="volId" volume={this.state.volume} src={rainAudio} loop/>
  </div>
 
-                <button onClick={this.rainVisibility}>Rain</button>
+{/* Light Btn */}
+        <button className={"lightBtn"} onClick={this.handleDropDown}>
+          {this.state.open ? 'Close' : 'Open'}
+        </button>
+ {/* <div className="lightDiv"> */}
+        <div className={classes}></div>
+{/* </div> */}
+
+            {/* Rain Button */}
+                <button className="rainBtn" onClick={this.rainVisibility}>
+                    <img src={rainIcon} alt="Rain Icon"></img>
+                </button>
+
+                {/* <button className="lightBtn" onClick={this.rainVisibility}>
+                    <img src={bulbIcon} alt="Lightbulb Icon"></img>
+                </button> */}
 
                 {/* transitionTime={5000} */}
             <Carousel showArrows={false} showIndicators={false} showStatus={false}  showThumbs={false}  stopOnHover={false} swipeable={false} selectedItem={this.state.timeoutShuffle}   infiniteLoop>
